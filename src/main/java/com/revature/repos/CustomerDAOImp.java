@@ -8,16 +8,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.revature.models.Home;
+import com.revature.models.Customer;
 import com.revature.utils.ConnectionUtil;
 
-public class HomeDAOImp implements  HomeDAO{
+public class CustomerDAOImp implements  CustomerDAO{
 
 	@Override
-	public List<Home> findAll() {
+	public List<Customer> findAll() {
 		// TODO Auto-generated method stub
 		try(Connection conn = ConnectionUtil.getConnection()){
-			String sql = "SELECT * FROM homes";
+			String sql = "SELECT * FROM customers";
 			
 			Statement statement = conn.createStatement();
 			
@@ -26,18 +26,18 @@ public class HomeDAOImp implements  HomeDAO{
 			
 			
 			//Convert this ResultSet into something useful
-			List<Home> list = new ArrayList();
+			List<Customer> list = new ArrayList();
 			
 			
 			//ResultSets have a cursor similarly to Scanners or other other I/O classes.
 			while(result.next()) {
-				Home home = new Home(); {
-				home.setHomeName(result.getString("home_name"));
-				home.setStreetAddress(result.getString("home_st_add"));	
-				home.setCity(result.getString("home_city"));
-				home.setRegion(result.getString("home_region"));
-				home.setZip(result.getString("home_zip"));
-				list.add(home);
+				Customer customer = new Customer(); {
+				customer.setKnownas(result.getString("known_as"));
+				customer.setTransaction(result.getString("transaction"));	
+				customer.setFirst(result.getString("first"));
+				customer.setLast(result.getString("last"));
+				customer.setTot_funds(result.getString("tot_funds"));
+				list.add(customer);
 				}
 			}
 			
@@ -51,10 +51,10 @@ public class HomeDAOImp implements  HomeDAO{
 	}
 
 	@Override
-	public Home findByName(String name) {
+	public Customer findByName(String name) {
 		// TODO Auto-generated method stub
 		try(Connection conn = ConnectionUtil.getConnection()){
-			String sql = "SELECT * FROM homes WHERE home_name = ?;";
+			String sql = "SELECT * FROM customers WHERE customer_name = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
@@ -64,19 +64,20 @@ public class HomeDAOImp implements  HomeDAO{
 			//What is my statement going to give me back when I run it?
 			ResultSet result = statement.executeQuery();
 			
-			Home home = new Home(); 
+			Customer customer = new Customer(); 
 			
 			
 			//ResultSets have a cursor similarly to Scanners or other other I/O classes.
 			while(result.next()) {
-				home.setHomeName(result.getString("home_name"));
-				home.setStreetAddress(result.getString("home_st_add"));	
-				home.setCity(result.getString("home_city"));
-				home.setRegion(result.getString("home_region"));
-				home.setZip(result.getString("home_zip"));
-			}
+				
+				customer.setKnownas(result.getString("known_as"));
+				customer.setTransaction(result.getString("transaction"));	
+				customer.setFirst(result.getString("first"));
+				customer.setLast(result.getString("last"));
+				customer.setTot_funds(result.getString("tot_funds"));
+				}
 		
-			return home;
+			return customer;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -86,24 +87,24 @@ public class HomeDAOImp implements  HomeDAO{
 	}
 
 	@Override
-	public boolean updateHome(Home home) {
+	public boolean updateCustomer(Customer customer) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean addHome(Home home) {
+	public boolean addCustomer(Customer customer) {
 		try (Connection conn = ConnectionUtil.getConnection()){
-			String sql = "INSERT INTO homes (home_name, home_st_add, home_city, home_region, home_zip)" + "VALUES (?,?,?,?,?);";
+			String sql = "INSERT INTO customers (customer_name, customer_st_add, customer_city, customer_region, customer_zip)" + "VALUES (?,?,?,?,?);";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
 			int index = 0;
-			statement.setString(++index, home.getHomeName());
-			statement.setString(++index, home.getStreetAddress());
-			statement.setString(++index, home.getCity());
-			statement.setString(++index, home.getRegion());
-			statement.setString(++index, home.getZip());
+			statement.setString(++index, customer.getKnownas());
+			statement.setString(++index, customer.getTransaction());
+			statement.setString(++index, customer.getFirst());
+			statement.setString(++index, customer.getLast());
+			statement.setString(++index, customer.getTot_funds());
 			
 			statement.execute();
 			
